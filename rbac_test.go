@@ -1,11 +1,9 @@
-package rbac_test
+package oparbac
 
 import (
 	"context"
 	_ "embed"
 	"testing"
-
-	"github.com/linzhengen/rbacmw/rbac"
 )
 
 //go:embed sample_data.json
@@ -14,12 +12,12 @@ var dataBytes []byte
 func TestAllow(t *testing.T) {
 	tests := []struct {
 		name  string
-		input rbac.Input
+		input Input
 		want  bool
 	}{
 		{
 			name: "admin allowed payment.*",
-			input: rbac.Input{
+			input: Input{
 				User:     "alice",
 				Resource: "payment.DELETE",
 			},
@@ -27,7 +25,7 @@ func TestAllow(t *testing.T) {
 		},
 		{
 			name: "bob allowed user.get",
-			input: rbac.Input{
+			input: Input{
 				User:     "bob",
 				Resource: "user.GET",
 			},
@@ -35,7 +33,7 @@ func TestAllow(t *testing.T) {
 		},
 		{
 			name: "bob allowed user.list",
-			input: rbac.Input{
+			input: Input{
 				User:     "bob",
 				Resource: "user.list",
 			},
@@ -43,7 +41,7 @@ func TestAllow(t *testing.T) {
 		},
 		{
 			name: "bob allowed user.delete",
-			input: rbac.Input{
+			input: Input{
 				User:     "bob",
 				Resource: "user.delete",
 			},
@@ -51,7 +49,7 @@ func TestAllow(t *testing.T) {
 		},
 		{
 			name: "bob not allowed user.create",
-			input: rbac.Input{
+			input: Input{
 				User:     "bob",
 				Resource: "user.create",
 			},
@@ -60,7 +58,7 @@ func TestAllow(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got, err := rbac.Allow(context.TODO(), dataBytes, test.input)
+			got, err := Allow(context.TODO(), dataBytes, test.input)
 			if err != nil {
 				t.Error(err)
 			}
