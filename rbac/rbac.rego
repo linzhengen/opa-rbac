@@ -17,7 +17,7 @@ allow {
 	user_is_granted[grant]
 
     # resource match
-    regex.globs_match(input.resource, grant.resource)
+    regex.globs_match(lower(input.resource), lower(grant.resource))
 }
 
 # user_is_admin is true if...

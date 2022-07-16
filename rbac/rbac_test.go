@@ -21,7 +21,7 @@ func TestAllow(t *testing.T) {
 			name: "admin allowed payment.*",
 			input: rbac.Input{
 				User:     "alice",
-				Resource: "payment.delete",
+				Resource: "payment.DELETE",
 			},
 			want: true,
 		},
@@ -29,7 +29,7 @@ func TestAllow(t *testing.T) {
 			name: "bob allowed user.get",
 			input: rbac.Input{
 				User:     "bob",
-				Resource: "user.get",
+				Resource: "user.GET",
 			},
 			want: true,
 		},
