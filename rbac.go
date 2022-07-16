@@ -1,14 +1,14 @@
 package oparbac
 
 import (
+	"bytes"
 	_ "embed"
+	"encoding/json"
 
 	"github.com/open-policy-agent/opa/storage/inmem"
 
-	"github.com/open-policy-agent/opa/rego"
-	"github.com/open-policy-agent/opa/util"
-
 	"context"
+	"github.com/open-policy-agent/opa/rego"
 )
 
 //go:embed rbac.rego
@@ -19,15 +19,21 @@ type Input struct {
 	Resource string `json:"resource"`
 }
 
-func Allow(ctx context.Context, data []byte, input Input) (bool, error) {
-	var json map[string]interface{}
-	if err := util.Unmarshal(data, &json); err != nil {
+type Data struct {
+	UserRoles  map[string][]string            `json:"user_roles"`
+	RoleGrants map[string][]map[string]string `json:"role_grants"`
+}
+
+func Allow(ctx context.Context, data Data, input Input) (bool, error) {
+	var buf bytes.Buffer
+	if err := json.NewEncoder(&buf).Encode(data); err != nil {
 		return false, err
 	}
+
 	q := rego.New(
 		rego.Query("x := data.rbac.allow"),
 		rego.Module("rbac.rego", string(rbacRego)),
-		rego.Store(inmem.NewFromObject(json)),
+		rego.Store(inmem.NewFromReader(&buf)),
 		rego.Input(input),
 	)
 

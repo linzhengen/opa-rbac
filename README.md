@@ -17,37 +17,33 @@ import (
 )
 
 func main() {
-	data := `
-{
-  "user_roles": {
-    "alice": [
-      "admin"
-    ],
-    "bob": [
-      "employee"
-    ],
-    "eve": [
-      "customer"
-    ]
-  },
-  "role_grants": {
-    "customer": [
-      {
-        "resource": "customer.get"
-      }
-    ],
-    "employee": [
-      {
-        "resource": "employee.list"
-      },
-      {
-        "resource": "employee.get"
-      }
-    ]
-  }
-}
-`
-	fmt.Println(oparbac.Allow(context.TODO(), []byte(data), oparbac.Input{User: "alice", Resource: "employee.get"}))
+	var data = oparbac.Data{
+		UserRoles: map[string][]string{
+			"alice": {
+				"admin",
+			},
+			"bob": {
+				"employee",
+			},
+			"eve": {
+				"customer",
+			},
+		},
+		RoleGrants: map[string][]map[string]string{
+			"customer": {
+				{
+					"resource": "user.get",
+				},
+			},
+			"employee": {
+				{
+					"resource": "user.list",
+				},
+			},
+		},
+	}
+	input := oparbac.Input{User: "alice", Resource: "employee.get"}
+	fmt.Println(oparbac.Allow(context.TODO(), data, input))
 }
 ```
 
