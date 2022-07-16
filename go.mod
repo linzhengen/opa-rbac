@@ -2,9 +2,7 @@ module github.com/linzhengen/opa-rbac
 
 go 1.18
 
-require (
-	github.com/open-policy-agent/opa v0.42.2
-)
+require github.com/open-policy-agent/opa v0.42.2
 
 require (
 	github.com/OneOfOne/xxhash v1.2.8 // indirect
