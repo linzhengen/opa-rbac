@@ -43,7 +43,7 @@ func main() {
 		},
 	}
 	input := oparbac.Input{User: "alice", Resource: "employee.get"}
-	fmt.Println(oparbac.Allow(context.TODO(), data, input))
+	fmt.Println(oparbac.Allowed(context.TODO(), data, input))
 }
 ```
 

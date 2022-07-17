@@ -24,7 +24,7 @@ type Data struct {
 	RoleGrants map[string][]map[string]string `json:"role_grants"`
 }
 
-func Allow(ctx context.Context, data Data, input Input) (bool, error) {
+func Allowed(ctx context.Context, data Data, input Input) (bool, error) {
 	var buf bytes.Buffer
 	if err := json.NewEncoder(&buf).Encode(data); err != nil {
 		return false, err

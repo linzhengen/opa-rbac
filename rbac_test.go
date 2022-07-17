@@ -94,7 +94,7 @@ func TestAllow(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got, err := Allow(context.TODO(), data, test.input)
+			got, err := Allowed(context.TODO(), data, test.input)
 			if err != nil {
 				t.Error(err)
 			}
